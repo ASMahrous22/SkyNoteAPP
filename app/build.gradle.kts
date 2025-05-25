@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 
     // Retrofit (for API calls)
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
@@ -75,9 +76,9 @@ dependencies {
     kapt ("com.github.bumptech.glide:compiler:4.15.1")
 
     // Room (for database)
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // RecyclerView (for forecast list)
     implementation("androidx.recyclerview:recyclerview:1.3.0")
@@ -88,4 +89,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Coroutine Testing
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+    // Android Architecture Components Testing
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+
+    // Mockito for mocking (optional)
+    testImplementation("org.mockito:mockito-core:5.2.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.0")
 }

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SkyNote</string>
+    <string name="no_favorites">No favorite places saved yet</string>
+    <string name="selected_location">Selected: %s</string>
+    <string name="favorites_title">Favorite Places</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="location_name_placeholder">Location Name</string>
+    <string name="coordinates_placeholder">Latitude: %s, Longitude: %s</string>
 </resources>
