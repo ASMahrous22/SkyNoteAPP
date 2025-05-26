@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.skynote.R
@@ -34,14 +33,11 @@ class HomeActivity : AppCompatActivity()
     private val MAP_REQUEST_CODE = 1001
 
     private val locationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission() )
-    { isGranted: Boolean ->
-        if (isGranted)
-        {
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
             fetchUserLocation()
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
     }
@@ -68,25 +64,25 @@ class HomeActivity : AppCompatActivity()
             adapter = fiveDayForecastAdapter
         }
 
-        // Setup toolbar as ActionBar
-        setSupportActionBar(binding.topAppBar)
-
-        // Setup toolbar navigation icon
-        binding.topAppBar.setNavigationOnClickListener {
-            binding.drawerLayout.openDrawer(binding.navigationView)
+        // Setup Bottom Navigation
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_search -> {
+                    val intent = Intent(this, MapSearchActivity::class.java)
+                    startActivityForResult(intent, MAP_REQUEST_CODE)
+                    true
+                }
+                R.id.nav_favorites -> {
+                    startActivity(Intent(this, FavoritesActivity::class.java))
+                    true
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
-
-        // Remove drawer lock to allow opening via icon
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-
-        // Setup button to open map
-        binding.btnOpenMap.setOnClickListener {
-            val intent = Intent(this, MapSearchActivity::class.java)
-            startActivityForResult(intent, MAP_REQUEST_CODE)
-        }
-
-        // Setup NavigationView
-        setupNavigationView()
 
         // Observe weather data and update UI
         observeWeatherData()
@@ -98,7 +94,8 @@ class HomeActivity : AppCompatActivity()
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == MAP_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == MAP_REQUEST_CODE && resultCode == RESULT_OK)
+        {
             val lat = data?.getDoubleExtra("lat", 30.0444) ?: 30.0444
             val lon = data?.getDoubleExtra("lon", 31.2357) ?: 31.2357
             viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
@@ -123,7 +120,8 @@ class HomeActivity : AppCompatActivity()
     {
         val locationHelper = LocationHelper(this)
         locationHelper.getLastKnownLocation { location ->
-            if (location != null) {
+            if (location != null)
+            {
                 viewModel.fetchWeather(
                     lat = location.latitude,
                     lon = location.longitude,
@@ -197,35 +195,5 @@ class HomeActivity : AppCompatActivity()
     {
         val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
         return sdf.format(Date(timestamp * 1000))
-    }
-
-    private fun setupNavigationView() {
-        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_favorites -> {
-                    startActivity(Intent(this, FavoritesActivity::class.java))
-                    true
-                }
-                R.id.nav_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
-                }
-                else -> false
-            }.also {
-                binding.drawerLayout.closeDrawer(binding.navigationView)
-            }
-        }
-    }
-
-    override fun onBackPressed()
-    {
-        if (binding.drawerLayout.isDrawerOpen(binding.navigationView))
-        {
-            binding.drawerLayout.closeDrawer(binding.navigationView)
-        }
-        else
-        {
-            super.onBackPressed()
-        }
     }
 }

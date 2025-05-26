@@ -6,10 +6,9 @@ import com.example.skynote.R
 import com.example.skynote.databinding.ActivitySettingsBinding
 import com.example.skynote.utils.PreferenceManager
 
-class SettingsActivity : AppCompatActivity()
-{
+class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var prefs: PreferenceManager
+    private lateinit var preferenceManager: PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -17,79 +16,73 @@ class SettingsActivity : AppCompatActivity()
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        prefs = PreferenceManager(this)
+        preferenceManager = PreferenceManager(this)
 
-        setupInitialSelections()
-        setupListeners()
-    }
+        // Load saved preferences
+        binding.rgTemperature.check(getRadioButtonIdForTempUnit(preferenceManager.getTempUnit()))
+        binding.rgWindSpeed.check(getRadioButtonIdForWindSpeedUnit(preferenceManager.getWindSpeedUnit()))
+        binding.rgLanguage.check(getRadioButtonIdForLanguage(preferenceManager.getLanguage()))
+        binding.rgLocation.check(getRadioButtonIdForLocationSource(preferenceManager.getLocationSource()))
 
-    private fun setupInitialSelections()
-    {
-        // Temperature
-        when (prefs.getTempUnit())
-        {
-            "metric" -> binding.rbCelsius.isChecked = true
-            "imperial" -> binding.rbFahrenheit.isChecked = true
-            "standard" -> binding.rbKelvin.isChecked = true
-        }
-
-        // Wind Speed
-        when (prefs.getWindSpeedUnit())
-        {
-            "m/s" -> binding.rbMS.isChecked = true
-            "mph" -> binding.rbMPH.isChecked = true
-        }
-
-        // Language
-        when (prefs.getLanguage())
-        {
-            "en" -> binding.rbEnglish.isChecked = true
-            "ar" -> binding.rbArabic.isChecked = true
-        }
-
-        // Location source
-        when (prefs.getLocationSource())
-        {
-            "gps" -> binding.rbGPS.isChecked = true
-            "map" -> binding.rbMap.isChecked = true
-        }
-    }
-
-    private fun setupListeners()
-    {
+        // Setting listeners
         binding.rgTemperature.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId)
             {
-                R.id.rbCelsius -> prefs.setTempUnit("metric")
-                R.id.rbFahrenheit -> prefs.setTempUnit("imperial")
-                R.id.rbKelvin -> prefs.setTempUnit("standard")
+                R.id.rbCelsius -> preferenceManager.setTempUnit("metric")
+                R.id.rbFahrenheit -> preferenceManager.setTempUnit("imperial")
+                R.id.rbKelvin -> preferenceManager.setTempUnit("standard")
             }
         }
 
         binding.rgWindSpeed.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId)
             {
-                R.id.rbMS -> prefs.setWindSpeedUnit("m/s")
-                R.id.rbMPH -> prefs.setWindSpeedUnit("mph")
+                R.id.rbMS -> preferenceManager.setWindSpeedUnit("m/s")
+                R.id.rbMPH -> preferenceManager.setWindSpeedUnit("mph")
             }
         }
 
         binding.rgLanguage.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId)
             {
-                R.id.rbEnglish -> prefs.setLanguage("en")
-                R.id.rbArabic -> prefs.setLanguage("ar")
+                R.id.rbEnglish -> preferenceManager.setLanguage("en")
+                R.id.rbArabic -> preferenceManager.setLanguage("ar")
             }
-            // Restarting activity to update UI language
-            recreate()
+            recreate() // Restart activity to apply language change
         }
 
         binding.rgLocation.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId)
             {
-                R.id.rbGPS -> prefs.setLocationSource("gps")
-                R.id.rbMap -> prefs.setLocationSource("map")
+                R.id.rbGPS -> preferenceManager.setLocationSource("gps")
+                R.id.rbMap -> preferenceManager.setLocationSource("map")
             }
         }
+    }
+
+    private fun getRadioButtonIdForTempUnit(unit: String): Int = when (unit)
+    {
+        "metric" -> R.id.rbCelsius
+        "imperial" -> R.id.rbFahrenheit
+        "standard" -> R.id.rbKelvin
+        else -> R.id.rbCelsius
+    }
+
+    private fun getRadioButtonIdForWindSpeedUnit(unit: String): Int = when (unit)
+    {
+        "mph" -> R.id.rbMPH
+        else -> R.id.rbMS
+    }
+
+    private fun getRadioButtonIdForLanguage(lang: String): Int = when (lang)
+    {
+        "ar" -> R.id.rbArabic
+        else -> R.id.rbEnglish
+    }
+
+    private fun getRadioButtonIdForLocationSource(source: String): Int = when (source)
+    {
+        "map" -> R.id.rbMap
+        else -> R.id.rbGPS
     }
 }

@@ -16,4 +16,8 @@
     <string name="select_location">Select Location on Map</string>
     <string name="today_forecast">Today (3-hour Forecast)</string>
     <string name="next_5_days">Next 5 Days</string>
+    <string name="temperature_unit">Temperature Unit</string>
+    <string name="wind_speed_unit">Wind Speed Unit</string>
+    <string name="language">Language</string>
+    <string name="location_source">Location Source</string>
 </resources>

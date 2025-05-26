@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/favoritesRoot"
+    android:background="@color/good_sky_blue"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android_Background="#ffffff"
     android:padding="16dp">
 
     <LinearLayout
@@ -17,10 +17,12 @@
             android:id="@+id/favoritesTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@color/skyblue"
             android:text="@string/favorites_title"
+            android:textColor="@color/navy_blue"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favoritesRecyclerView"
@@ -32,15 +34,17 @@
             android:id="@+id/emptyState"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/navy_blue"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_favorites"
-                android:textSize="16sp"
-                android:textColor="#555" />
+                android:textColor="@color/skyblue"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 
