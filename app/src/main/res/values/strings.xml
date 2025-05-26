@@ -6,4 +6,14 @@
     <string name="add_favorite">Add Favorite</string>
     <string name="location_name_placeholder">Location Name</string>
     <string name="coordinates_placeholder">Latitude: %s, Longitude: %s</string>
+    <string name="city">City</string>
+    <string name="date">Date: %1$s</string>
+    <string name="time">Time: %1$s</string>
+    <string name="humidity">Humidity: %1$s%%</string>
+    <string name="wind">Wind: %1$s m/s</string>
+    <string name="pressure">Pressure: %1$s hPa</string>
+    <string name="clouds">Clouds: %1$s%%</string>
+    <string name="select_location">Select Location on Map</string>
+    <string name="today_forecast">Today (3-hour Forecast)</string>
+    <string name="next_5_days">Next 5 Days</string>
 </resources>

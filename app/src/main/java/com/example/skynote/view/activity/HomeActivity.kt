@@ -9,11 +9,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.skynote.R
-import com.example.skynote.databinding.ActivityHomeBinding
 import com.example.skynote.data.model.WeatherItem
+import com.example.skynote.databinding.ActivityHomeBinding
 import com.example.skynote.utils.LocationHelper
 import com.example.skynote.utils.PreferenceManager
 import com.example.skynote.view.adapter.FiveDayForecastAdapter
@@ -22,7 +23,8 @@ import com.example.skynote.viewmodel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity()
+{
     private lateinit var preferenceManager: PreferenceManager
     private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by viewModels()
@@ -32,16 +34,20 @@ class HomeActivity : AppCompatActivity() {
     private val MAP_REQUEST_CODE = 1001
 
     private val locationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
+        ActivityResultContracts.RequestPermission() )
+    { isGranted: Boolean ->
+        if (isGranted)
+        {
             fetchUserLocation()
-        } else {
+        }
+        else
+        {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -62,10 +68,16 @@ class HomeActivity : AppCompatActivity() {
             adapter = fiveDayForecastAdapter
         }
 
+        // Setup toolbar as ActionBar
+        setSupportActionBar(binding.topAppBar)
+
         // Setup toolbar navigation icon
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.openDrawer(binding.navigationView)
         }
+
+        // Remove drawer lock to allow opening via icon
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         // Setup button to open map
         binding.btnOpenMap.setOnClickListener {
@@ -83,7 +95,8 @@ class HomeActivity : AppCompatActivity() {
         requestLocationPermission()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MAP_REQUEST_CODE && resultCode == RESULT_OK) {
             val lat = data?.getDoubleExtra("lat", 30.0444) ?: 30.0444
@@ -118,7 +131,9 @@ class HomeActivity : AppCompatActivity() {
                     lang = preferenceManager.getLanguage(),
                     apiKey = apiKey
                 )
-            } else {
+            }
+            else
+            {
                 Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
             }
         }
@@ -127,7 +142,8 @@ class HomeActivity : AppCompatActivity() {
     private fun observeWeatherData()
     {
         viewModel.weatherData.observe(this) { weather ->
-            if (weather != null) {
+            if (weather != null && weather.list.isNotEmpty())
+            {
                 // Current weather (first item)
                 val current = weather.list[0]
                 with(binding) {
@@ -136,24 +152,26 @@ class HomeActivity : AppCompatActivity() {
                     tvDesc.text = current.weather[0].description.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
                     }
+                    tvDate.text = "Date: ${convertToDate(current.dt)}"
+                    tvTime.text = "Time: ${convertToTime(current.dt)}"
                     tvHumidity.text = "Humidity: ${current.main.humidity}%"
                     tvWind.text = "Wind: ${current.wind.speed} ${preferenceManager.getWindSpeedUnit()}"
                     tvPressure.text = "Pressure: ${current.main.pressure} hPa"
                     tvClouds.text = "Clouds: ${current.clouds.all}%"
-                    tvDate.text = "Date: ${convertToDate(current.dt)}"
-                    tvTime.text = "Time: ${convertToTime(current.dt)}"
                     val iconUrl = "https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png"
                     Glide.with(this@HomeActivity).load(iconUrl).into(ivWeatherIcon)
                 }
 
                 // Today's forecast (next 8 items for ~24 hours, 3-hour intervals)
-                val todayForecast = weather.list.take(8) // Adjust based on API response
+                val todayForecast = weather.list.take(8)
                 todayForecastAdapter.updateData(todayForecast)
 
                 // 5-day forecast (one item per day)
                 val fiveDayForecast = getFiveDayForecast(weather.list)
                 fiveDayForecastAdapter.updateData(fiveDayForecast)
-            } else {
+            }
+            else
+            {
                 Toast.makeText(this, "Failed to load weather", Toast.LENGTH_SHORT).show()
             }
         }
@@ -163,19 +181,6 @@ class HomeActivity : AppCompatActivity() {
                 if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
         }
     }
-
-//    private fun getFiveDayForecast(items: List<WeatherItem>): List<WeatherItem>
-//    {
-//        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-//        val dailyItems = mutableMapOf<String, WeatherItem>()
-//        items.forEach { item ->
-//            val date = sdf.format(Date(item.dt * 1000))
-//            if (!dailyItems.containsKey(date)) {
-//                dailyItems[date] = item // Take first item of each day
-//            }
-//        }
-//        return dailyItems.values.toList().take(5) // Limit to 5 days
-//    }
 
     private fun getFiveDayForecast(items: List<WeatherItem>): List<WeatherItem>
     {
@@ -194,8 +199,7 @@ class HomeActivity : AppCompatActivity() {
         return sdf.format(Date(timestamp * 1000))
     }
 
-    private fun setupNavigationView()
-    {
+    private fun setupNavigationView() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_favorites -> {
@@ -210,6 +214,18 @@ class HomeActivity : AppCompatActivity() {
             }.also {
                 binding.drawerLayout.closeDrawer(binding.navigationView)
             }
+        }
+    }
+
+    override fun onBackPressed()
+    {
+        if (binding.drawerLayout.isDrawerOpen(binding.navigationView))
+        {
+            binding.drawerLayout.closeDrawer(binding.navigationView)
+        }
+        else
+        {
+            super.onBackPressed()
         }
     }
 }
