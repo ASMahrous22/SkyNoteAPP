@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_favorites"
+        android:title="Favorite Locations"
+        android:icon="@drawable/ic_favorite"
+        android:iconTint="@color/skyblue"/>
+    <item
+        android:id="@+id/nav_settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings"
+        android:iconTint="@color/skyblue"/>
+</menu>

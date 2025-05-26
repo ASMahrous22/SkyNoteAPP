@@ -7,6 +7,7 @@ data class WeatherResponse(
 
 data class WeatherItem(
     val dt: Long,
+    val dt_txt: String,
     val main: Main,
     val weather: List<Weather>,
     val wind: Wind,
