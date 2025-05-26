@@ -20,4 +20,6 @@
     <string name="wind_speed_unit">Wind Speed Unit</string>
     <string name="language">Language</string>
     <string name="location_source">Location Source</string>
+    <string name="confirm_delete_title">Confirm Delete</string>
+    <string name="confirm_delete_message">Are you sure you want to remove %1$s from favorite locations?</string>
 </resources>

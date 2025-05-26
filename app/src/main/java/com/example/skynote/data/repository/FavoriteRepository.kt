@@ -1,8 +1,10 @@
 package com.example.skynote.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.skynote.data.local.AppDatabase
 import com.example.skynote.data.local.FavoriteLocation
+import java.util.Locale
 
 class FavoriteRepository(context: Context)
 {
@@ -19,4 +21,5 @@ class FavoriteRepository(context: Context)
     {
         favoriteDao.deleteFavorite(location)
     }
+
 }
