@@ -9,13 +9,17 @@ import com.example.skynote.databinding.ItemFavoriteLocationBinding
 
 class FavoriteAdapter(
     private var items: List<FavoriteLocation>,
-    private val onDeleteClick: (Int, FavoriteLocation) -> Unit
+    private val onDeleteClick: (Int, FavoriteLocation) -> Unit,
+    private val onItemClick: (FavoriteLocation) -> Unit
 ) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
     inner class FavoriteViewHolder(val binding: ItemFavoriteLocationBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.btnDelete.setOnClickListener {
                 onDeleteClick(adapterPosition, items[adapterPosition])
+            }
+            binding.root.setOnClickListener {
+                onItemClick(items[adapterPosition])
             }
         }
 

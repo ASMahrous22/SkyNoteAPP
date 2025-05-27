@@ -31,6 +31,8 @@ class HomeActivity : AppCompatActivity()
     private lateinit var fiveDayForecastAdapter: FiveDayForecastAdapter
     private val apiKey = "fd6158b89b201f0c3c08f53f3bded73f"
     private val MAP_REQUEST_CODE = 1001
+    private var lastLat: Double = 0.0
+    private var lastLon: Double = 0.0
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -39,6 +41,8 @@ class HomeActivity : AppCompatActivity()
             fetchUserLocation()
         } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+            // Fallback to last known location if available
+            loadLastKnownLocation()
         }
     }
 
@@ -64,7 +68,6 @@ class HomeActivity : AppCompatActivity()
             adapter = fiveDayForecastAdapter
         }
 
-
         // Setup Bottom Navigation
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -89,11 +92,32 @@ class HomeActivity : AppCompatActivity()
             }
         }
 
+        // Check for favorite location from intent
+        val lat = intent.getDoubleExtra("lat", 0.0)
+        val lon = intent.getDoubleExtra("lon", 0.0)
+        if (lat != 0.0 && lon != 0.0) {
+            lastLat = lat
+            lastLon = lon
+            saveLastKnownLocation(lat, lon)
+            viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+        } else {
+            requestLocationPermission()
+        }
+
+        // Setup Swipe Refresh Layout
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            if (lastLat != 0.0 && lastLon != 0.0) {
+                viewModel.fetchWeather(lastLat, lastLon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+                Toast.makeText(this, "Refreshing weather data...", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "No location available to refresh", Toast.LENGTH_SHORT).show()
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+        }
+        binding.swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.skyblue))
+
         // Observe weather data and update UI
         observeWeatherData()
-
-        // Request location permission
-        requestLocationPermission()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
@@ -103,6 +127,9 @@ class HomeActivity : AppCompatActivity()
         {
             val lat = data?.getDoubleExtra("lat", 30.0444) ?: 30.0444
             val lon = data?.getDoubleExtra("lon", 31.2357) ?: 31.2357
+            lastLat = lat
+            lastLon = lon
+            saveLastKnownLocation(lat, lon)
             viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
         }
     }
@@ -127,9 +154,12 @@ class HomeActivity : AppCompatActivity()
         locationHelper.getLastKnownLocation { location ->
             if (location != null)
             {
+                lastLat = location.latitude
+                lastLon = location.longitude
+                saveLastKnownLocation(lastLat, lastLon)
                 viewModel.fetchWeather(
-                    lat = location.latitude,
-                    lon = location.longitude,
+                    lat = lastLat,
+                    lon = lastLon,
                     units = preferenceManager.getTempUnit(),
                     lang = preferenceManager.getLanguage(),
                     apiKey = apiKey
@@ -138,7 +168,23 @@ class HomeActivity : AppCompatActivity()
             else
             {
                 Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
+                loadLastKnownLocation()
             }
+        }
+    }
+
+    private fun saveLastKnownLocation(lat: Double, lon: Double) {
+        preferenceManager.setLastLatitude(lat)
+        preferenceManager.setLastLongitude(lon)
+    }
+
+    private fun loadLastKnownLocation() {
+        lastLat = preferenceManager.getLastLatitude()
+        lastLon = preferenceManager.getLastLongitude()
+        if (lastLat != 0.0 && lastLon != 0.0) {
+            viewModel.fetchWeather(lastLat, lastLon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+        } else {
+            Toast.makeText(this, "No previous location found", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -172,10 +218,12 @@ class HomeActivity : AppCompatActivity()
                 // 5-day forecast (one item per day)
                 val fiveDayForecast = getFiveDayForecast(weather.list)
                 fiveDayForecastAdapter.updateData(fiveDayForecast)
+                binding.swipeRefreshLayout.isRefreshing = false
             }
             else
             {
                 Toast.makeText(this, "Failed to load weather", Toast.LENGTH_SHORT).show()
+                binding.swipeRefreshLayout.isRefreshing = false
             }
         }
 

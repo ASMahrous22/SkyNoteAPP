@@ -50,4 +50,24 @@ class PreferenceManager(context: Context)
     {
         return prefs.getString("location_source", "gps") ?: "gps"
     }
+
+    fun setLastLatitude(lat: Double)
+    {
+        prefs.edit().putFloat("last_latitude", lat.toFloat()).apply()
+    }
+
+    fun getLastLatitude(): Double
+    {
+        return prefs.getFloat("last_latitude", 0.0f).toDouble()
+    }
+
+    fun setLastLongitude(lon: Double)
+    {
+        prefs.edit().putFloat("last_longitude", lon.toFloat()).apply()
+    }
+
+    fun getLastLongitude(): Double
+    {
+        return prefs.getFloat("last_longitude", 0.0f).toDouble()
+    }
 }

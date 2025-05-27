@@ -24,13 +24,11 @@ class FavoritesActivity : AppCompatActivity()
         if (result.resultCode == RESULT_OK)
         {
             val data = result.data
-            //val name = data?.getStringExtra("name") ?: "Unknown Location"
             val lat = data?.getDoubleExtra("lat", 0.0) ?: 0.0
             val lon = data?.getDoubleExtra("lon", 0.0) ?: 0.0
             if (lat != 0.0 && lon != 0.0)
             {
                 val name = getLocationName(lat, lon) ?: "$lat, $lon"
-               //val location = FavoriteLocation(name = name, latitude = lat, longitude = lon)
                 viewModel.addFavorite(FavoriteLocation(0, name, lat, lon))
             }
             else
@@ -47,9 +45,15 @@ class FavoritesActivity : AppCompatActivity()
         setContentView(binding.root)
 
         // Setup RecyclerView
-        adapter = FavoriteAdapter(emptyList()) { position, location ->
+        adapter = FavoriteAdapter(emptyList(), { position, location ->
             showDeleteConfirmation(position, location)
-        }
+        }, { location ->
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                putExtra("lat", location.latitude)
+                putExtra("lon", location.longitude)
+            }
+            startActivity(intent)
+        })
         binding.favoritesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.favoritesRecyclerView.adapter = adapter
 
