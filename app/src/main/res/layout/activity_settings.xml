@@ -182,6 +182,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp">
@@ -226,6 +227,18 @@
                     </RadioGroup>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Confirm Button -->
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/skyblue"
+                android:padding="8dp"
+                android:text="Confirm"
+                android:textColor="@color/navy_blue"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

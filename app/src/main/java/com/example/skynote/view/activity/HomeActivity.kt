@@ -91,7 +91,7 @@ class HomeActivity : AppCompatActivity()
             }
         }
 
-        // Check for favorite location from intent
+        // Check for location from intent (e.g., from MapSearchActivity or SettingsActivity)
         val lat = intent.getDoubleExtra("lat", 0.0)
         val lon = intent.getDoubleExtra("lon", 0.0)
         if (lat != 0.0 && lon != 0.0) {
@@ -100,7 +100,12 @@ class HomeActivity : AppCompatActivity()
             saveLastKnownLocation(lat, lon)
             viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
         } else {
-            requestLocationPermission()
+            // Respect the location source preference
+            if (preferenceManager.getLocationSource() == "gps") {
+                requestLocationPermission()
+            } else {
+                loadLastKnownLocation()
+            }
         }
 
         // Setup Swipe Refresh Layout
