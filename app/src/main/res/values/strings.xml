@@ -22,4 +22,7 @@
     <string name="location_source">Location Source</string>
     <string name="confirm_delete_title">Confirm Delete</string>
     <string name="confirm_delete_message">Are you sure you want to remove %1$s from favorite locations?</string>
+    <string name="weather_alerts_title">Weather Alerts</string>
+    <string name="no_weather_alerts">No weather alerts set yet.</string>
+
 </resources>

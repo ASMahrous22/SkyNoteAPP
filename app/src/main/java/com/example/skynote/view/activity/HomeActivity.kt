@@ -64,6 +64,7 @@ class HomeActivity : AppCompatActivity()
             adapter = fiveDayForecastAdapter
         }
 
+
         // Setup Bottom Navigation
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -74,6 +75,10 @@ class HomeActivity : AppCompatActivity()
                 }
                 R.id.nav_favorites -> {
                     startActivity(Intent(this, FavoritesActivity::class.java))
+                    true
+                }
+                R.id.nav_alerts -> {
+                    startActivity(Intent(this, WeatherAlertsActivity::class.java))
                     true
                 }
                 R.id.nav_settings -> {

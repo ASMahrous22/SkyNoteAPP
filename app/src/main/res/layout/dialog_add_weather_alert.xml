@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/good_sky_blue"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/navy_blue"
+            android:text="Select Date"
+            android:textColor="@color/skyblue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:calendarViewShown="true"
+            android:datePickerMode="calendar"
+            android:dayOfWeekBackground="@color/skyblue"
+            android:headerBackground="@color/navy_blue"
+            android:yearListSelectorColor="@color/skyblue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/navy_blue"
+            android:text="Select Time"
+            android:textColor="@color/skyblue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:headerBackground="@color/navy_blue"
+            android:numbersBackgroundColor="@color/white"
+            android:numbersInnerTextColor="@color/navy_blue"
+            android:numbersSelectorColor="@color/skyblue"
+            android:numbersTextColor="@color/navy_blue"
+            android:timePickerMode="clock" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Alarm Type"
+            android:textColor="@color/navy_blue"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerAlarmType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Duration (minutes)"
+            android:textColor="@color/navy_blue"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    </ScrollView>
