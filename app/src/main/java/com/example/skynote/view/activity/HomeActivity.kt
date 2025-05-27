@@ -41,7 +41,6 @@ class HomeActivity : AppCompatActivity()
             fetchUserLocation()
         } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
-            // Fallback to last known location if available
             loadLastKnownLocation()
         }
     }
@@ -207,6 +206,7 @@ class HomeActivity : AppCompatActivity()
                     tvWind.text = "Wind: ${current.wind.speed} ${preferenceManager.getWindSpeedUnit()}"
                     tvPressure.text = "Pressure: ${current.main.pressure} hPa"
                     tvClouds.text = "Clouds: ${current.clouds.all}%"
+                    tvLastUpdated.text = "Last Updated: ${SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(Date(current.dt * 1000))}"
                     val iconUrl = "https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png"
                     Glide.with(this@HomeActivity).load(iconUrl).into(ivWeatherIcon)
                 }
@@ -222,7 +222,7 @@ class HomeActivity : AppCompatActivity()
             }
             else
             {
-                Toast.makeText(this, "Failed to load weather", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No internet or cached data available", Toast.LENGTH_SHORT).show()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
