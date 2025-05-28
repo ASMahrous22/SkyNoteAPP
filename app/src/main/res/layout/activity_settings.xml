@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/good_sky_blue"
+    android:background="@drawable/current_weather_gradient"
     android:padding="16dp">
 
     <!-- Scrollable Content -->
@@ -39,7 +39,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Temperature Unit"
+                        android:text="@string/temperature_unit"
                         android:textColor="@color/navy_blue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -55,7 +55,7 @@
                             android:id="@+id/rbCelsius"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="°C"
+                            android:text="@string/rbCelsius"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
 
@@ -63,7 +63,7 @@
                             android:id="@+id/rbFahrenheit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="°F"
+                            android:text="@string/rbFahrenheit"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
 
@@ -71,7 +71,7 @@
                             android:id="@+id/rbKelvin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="K"
+                            android:text="@string/rbKelvin"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
                     </RadioGroup>
@@ -97,7 +97,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Wind Speed Unit"
+                        android:text="@string/wind_speed_unit"
                         android:textColor="@color/navy_blue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -113,7 +113,7 @@
                             android:id="@+id/rbMS"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="m/s"
+                            android:text="@string/rbMS"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
 
@@ -121,7 +121,7 @@
                             android:id="@+id/rbMPH"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="mph"
+                            android:text="@string/rbMPH"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
                     </RadioGroup>
@@ -147,7 +147,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Language"
+                        android:text="@string/language"
                         android:textColor="@color/navy_blue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -163,7 +163,7 @@
                             android:id="@+id/rbEnglish"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="English"
+                            android:text="@string/rbEnglish"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
 
@@ -171,7 +171,7 @@
                             android:id="@+id/rbArabic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Arabic"
+                            android:text="@string/rbArabic"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
                     </RadioGroup>
@@ -197,7 +197,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Location Source"
+                        android:text="@string/location_source"
                         android:textColor="@color/navy_blue"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -213,7 +213,7 @@
                             android:id="@+id/rbGPS"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="GPS"
+                            android:text="@string/rbGPS"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
 
@@ -221,7 +221,7 @@
                             android:id="@+id/rbMap"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Map"
+                            android:text="@string/rbMap"
                             android:textColor="@color/navy_blue"
                             android:textSize="16sp" />
                     </RadioGroup>
@@ -234,11 +234,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/skyblue"
-                android:padding="8dp"
-                android:text="Confirm"
+                android:text="@string/btnConfirm"
                 android:textColor="@color/navy_blue"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:backgroundTint="@color/skyblue"
+                android:padding="8dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

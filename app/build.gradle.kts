@@ -51,6 +51,8 @@ dependencies {
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
     implementation ("androidx.work:work-runtime-ktx:2.9.0")
+    implementation ("androidx.gridlayout:gridlayout:1.0.0")
+
     // Retrofit (for API calls)
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

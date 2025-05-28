@@ -1,8 +1,11 @@
 package com.example.skynote.view.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.skynote.R
 import com.example.skynote.data.model.WeatherItem
+import com.example.skynote.data.model.WeatherResponse
 import com.example.skynote.databinding.ActivityHomeBinding
 import com.example.skynote.utils.LocationHelper
+import com.example.skynote.utils.LocaleHelper
 import com.example.skynote.utils.PreferenceManager
 import com.example.skynote.view.adapter.FiveDayForecastAdapter
 import com.example.skynote.view.adapter.TodayForecastAdapter
@@ -40,7 +45,7 @@ class HomeActivity : AppCompatActivity()
         if (isGranted) {
             fetchUserLocation()
         } else {
-            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.location_permission_denied, Toast.LENGTH_SHORT).show()
             loadLastKnownLocation()
         }
     }
@@ -48,10 +53,10 @@ class HomeActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+        preferenceManager = PreferenceManager(this)
+        LocaleHelper.updateLocale(this, preferenceManager.getLanguage())
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        preferenceManager = PreferenceManager(this)
 
         // Initialize adapters
         todayForecastAdapter = TodayForecastAdapter(emptyList())
@@ -98,7 +103,7 @@ class HomeActivity : AppCompatActivity()
             lastLat = lat
             lastLon = lon
             saveLastKnownLocation(lat, lon)
-            viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+            fetchWeatherData(lat, lon)
         } else {
             // Respect the location source preference
             if (preferenceManager.getLocationSource() == "gps") {
@@ -111,10 +116,10 @@ class HomeActivity : AppCompatActivity()
         // Setup Swipe Refresh Layout
         binding.swipeRefreshLayout.setOnRefreshListener {
             if (lastLat != 0.0 && lastLon != 0.0) {
-                viewModel.fetchWeather(lastLat, lastLon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
-                Toast.makeText(this, "Refreshing weather data...", Toast.LENGTH_SHORT).show()
+                fetchWeatherData(lastLat, lastLon)
             } else {
-                Toast.makeText(this, "No location available to refresh", Toast.LENGTH_SHORT).show()
+                loadCachedWeatherData()
+                Toast.makeText(this, R.string.no_location_available, Toast.LENGTH_SHORT).show()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
@@ -134,7 +139,7 @@ class HomeActivity : AppCompatActivity()
             lastLat = lat
             lastLon = lon
             saveLastKnownLocation(lat, lon)
-            viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+            fetchWeatherData(lat, lon)
         }
     }
 
@@ -161,17 +166,11 @@ class HomeActivity : AppCompatActivity()
                 lastLat = location.latitude
                 lastLon = location.longitude
                 saveLastKnownLocation(lastLat, lastLon)
-                viewModel.fetchWeather(
-                    lat = lastLat,
-                    lon = lastLon,
-                    units = preferenceManager.getTempUnit(),
-                    lang = preferenceManager.getLanguage(),
-                    apiKey = apiKey
-                )
+                fetchWeatherData(lastLat, lastLon)
             }
             else
             {
-                Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.failed_to_get_location, Toast.LENGTH_SHORT).show()
                 loadLastKnownLocation()
             }
         }
@@ -186,10 +185,27 @@ class HomeActivity : AppCompatActivity()
         lastLat = preferenceManager.getLastLatitude()
         lastLon = preferenceManager.getLastLongitude()
         if (lastLat != 0.0 && lastLon != 0.0) {
-            viewModel.fetchWeather(lastLat, lastLon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+            fetchWeatherData(lastLat, lastLon)
         } else {
-            Toast.makeText(this, "No previous location found", Toast.LENGTH_SHORT).show()
+            loadCachedWeatherData()
+            Toast.makeText(this, R.string.no_previous_location, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun fetchWeatherData(lat: Double, lon: Double) {
+        if (isOnline()) {
+            viewModel.fetchWeather(lat, lon, preferenceManager.getTempUnit(), preferenceManager.getLanguage(), apiKey)
+        } else {
+            loadCachedWeatherData()
+            Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun isOnline(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     private fun observeWeatherData()
@@ -197,23 +213,25 @@ class HomeActivity : AppCompatActivity()
         viewModel.weatherData.observe(this) { weather ->
             if (weather != null && weather.list.isNotEmpty())
             {
+                // Cache the weather data
+                preferenceManager.saveWeatherData(weather)
+
                 // Current weather (first item)
                 val current = weather.list[0]
                 with(binding) {
                     tvCity.text = weather.city.name
                     tvTemp.text = "${current.main.temp.toInt()}°"
                     tvDesc.text = current.weather[0].description.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                        if (it.isLowerCase()) it.titlecase(Locale(preferenceManager.getLanguage())) else it.toString()
                     }
-                    tvDate.text = "Date: ${convertToDate(current.dt)}"
-                    tvTime.text = "Time: ${convertToTime(current.dt)}"
-                    tvHumidity.text = "Humidity: ${current.main.humidity}%"
-                    tvWind.text = "Wind: ${current.wind.speed} ${preferenceManager.getWindSpeedUnit()}"
-                    tvPressure.text = "Pressure: ${current.main.pressure} hPa"
-                    tvClouds.text = "Clouds: ${current.clouds.all}%"
-                    tvLastUpdated.text = "Last Updated: ${SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(Date(current.dt * 1000))}"
-                    val iconUrl = "https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png"
-                    Glide.with(this@HomeActivity).load(iconUrl).into(ivWeatherIcon)
+                    tvDate.text = getString(R.string.tvDate, convertToDate(current.dt))
+                    tvTime.text = getString(R.string.tvTime, convertToTime(current.dt))
+                    tvHumidity.text = getString(R.string.tvHumidity, current.main.humidity.toString())
+                    tvWind.text = getString(R.string.tvWind, current.wind.speed.toString())
+                    tvPressure.text = getString(R.string.tvPressure, current.main.pressure.toString())
+                    tvClouds.text = getString(R.string.tvClouds, current.clouds.all.toString())
+                    tvLastUpdated.text = getString(R.string.tvLastUpdated, SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale(preferenceManager.getLanguage())).format(Date(current.dt * 1000)))
+                    Glide.with(this@HomeActivity).load(getWeatherIcon(current.weather[0].icon)).into(ivWeatherIcon)
                 }
 
                 // Today's forecast (next 8 items for ~24 hours, 3-hour intervals)
@@ -227,7 +245,7 @@ class HomeActivity : AppCompatActivity()
             }
             else
             {
-                Toast.makeText(this, "No internet or cached data available", Toast.LENGTH_SHORT).show()
+                loadCachedWeatherData()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
@@ -238,6 +256,56 @@ class HomeActivity : AppCompatActivity()
         }
     }
 
+    private fun loadCachedWeatherData() {
+        val cachedWeather = preferenceManager.getWeatherData()
+        if (cachedWeather != null && cachedWeather.list.isNotEmpty()) {
+            with(binding) {
+                val current = cachedWeather.list[0]
+                tvCity.text = cachedWeather.city.name
+                tvTemp.text = "${current.main.temp.toInt()}°"
+                tvDesc.text = current.weather[0].description.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale(preferenceManager.getLanguage())) else it.toString()
+                }
+                tvDate.text = getString(R.string.tvDate, convertToDate(current.dt))
+                tvTime.text = getString(R.string.tvTime, convertToTime(current.dt))
+                tvHumidity.text = getString(R.string.tvHumidity, current.main.humidity.toString())
+                tvWind.text = getString(R.string.tvWind, current.wind.speed.toString())
+                tvPressure.text = getString(R.string.tvPressure, current.main.pressure.toString())
+                tvClouds.text = getString(R.string.tvClouds, current.clouds.all.toString())
+                tvLastUpdated.text = getString(R.string.tvLastUpdated, SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale(preferenceManager.getLanguage())).format(Date(current.dt * 1000)))
+                Glide.with(this@HomeActivity).load(getWeatherIcon(current.weather[0].icon)).into(ivWeatherIcon)
+
+                // Today's forecast
+                val todayForecast = cachedWeather.list.take(8)
+                todayForecastAdapter.updateData(todayForecast)
+
+                // 5-day forecast
+                val fiveDayForecast = getFiveDayForecast(cachedWeather.list)
+                fiveDayForecastAdapter.updateData(fiveDayForecast)
+            }
+        } else {
+            Toast.makeText(this, R.string.no_cached_data, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getWeatherIcon(iconCode: String): Int {
+        return when (iconCode) {
+            "01d" -> R.drawable.weather_01d
+            "01n" -> R.drawable.weather_01n
+            "02d" -> R.drawable.weather_02d
+            "02n" -> R.drawable.weather_02n
+            "03d", "03n" -> R.drawable.weather_03
+            "04d", "04n" -> R.drawable.weather_04
+            "09d", "09n" -> R.drawable.weather_09
+            "10d" -> R.drawable.weather_10d
+            "10n" -> R.drawable.weather_10n
+            "11d", "11n" -> R.drawable.weather_11
+            "13d", "13n" -> R.drawable.weather_13
+            "50d", "50n" -> R.drawable.weather_50
+            else -> R.drawable.weather_default
+        }
+    }
+
     private fun getFiveDayForecast(items: List<WeatherItem>): List<WeatherItem>
     {
         return items.filter { it.dt_txt.contains("12:00:00") }.take(5)
@@ -245,13 +313,13 @@ class HomeActivity : AppCompatActivity()
 
     private fun convertToDate(timestamp: Long): String
     {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale(preferenceManager.getLanguage()))
         return sdf.format(Date(timestamp * 1000))
     }
 
     private fun convertToTime(timestamp: Long): String
     {
-        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val sdf = SimpleDateFormat("hh:mm a", Locale(preferenceManager.getLanguage()))
         return sdf.format(Date(timestamp * 1000))
     }
 }

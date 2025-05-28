@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.skynote.R
 import com.example.skynote.databinding.ActivitySettingsBinding
+import com.example.skynote.utils.LocaleHelper
 import com.example.skynote.utils.PreferenceManager
 
 class SettingsActivity : AppCompatActivity() {
@@ -29,10 +30,10 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferenceManager = PreferenceManager(this)
+        LocaleHelper.updateLocale(this, preferenceManager.getLanguage())
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        preferenceManager = PreferenceManager(this)
 
         // Load saved preferences
         binding.rgTemperature.check(getRadioButtonIdForTempUnit(preferenceManager.getTempUnit()))
@@ -61,6 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                 R.id.rbEnglish -> preferenceManager.setLanguage("en")
                 R.id.rbArabic -> preferenceManager.setLanguage("ar")
             }
+            LocaleHelper.updateLocale(this, preferenceManager.getLanguage())
             recreate() // Restart activity to apply language change
         }
 

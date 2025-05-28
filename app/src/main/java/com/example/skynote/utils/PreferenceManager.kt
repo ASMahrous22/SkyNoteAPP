@@ -2,10 +2,14 @@ package com.example.skynote.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.skynote.data.model.WeatherResponse
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class PreferenceManager(context: Context)
 {
     private val prefs: SharedPreferences = context.getSharedPreferences("weather_prefs", Context.MODE_PRIVATE)
+    private val gson = Gson()
 
     // Temperature Unit
     fun setTempUnit(unit: String)
@@ -69,5 +73,20 @@ class PreferenceManager(context: Context)
     fun getLastLongitude(): Double
     {
         return prefs.getFloat("last_longitude", 0.0f).toDouble()
+    }
+
+    fun saveWeatherData(weather: WeatherResponse) {
+        val json = gson.toJson(weather)
+        prefs.edit().putString("weather_data", json).apply()
+    }
+
+    fun getWeatherData(): WeatherResponse? {
+        val json = prefs.getString("weather_data", null) ?: return null
+        val type = object : TypeToken<WeatherResponse>() {}.type
+        return try {
+            gson.fromJson(json, type)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

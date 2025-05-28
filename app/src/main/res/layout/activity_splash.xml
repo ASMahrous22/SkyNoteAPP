@@ -20,7 +20,7 @@
         app:lottie_rawRes="@raw/splash_screen" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewSplash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/skyblue"

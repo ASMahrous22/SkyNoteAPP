@@ -23,6 +23,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/gradient_background"
                 android:orientation="vertical"
                 android:padding="24dp">
 
@@ -56,19 +57,17 @@
                             android:id="@+id/tvCity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hakuna Matataa"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="@string/tvCity"
                             android:textColor="@color/navy_blue"
                             android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/montserrat_bold" />
+                            android:textStyle="bold" />
 
-                        <com.airbnb.lottie.LottieAnimationView
+                        <ImageView
                             android:id="@+id/ivWeatherIcon"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_marginTop="16dp"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true"
                             android:contentDescription="Weather Icon" />
 
                         <TextView
@@ -76,46 +75,78 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/montserrat_bold"
                             android:text="28°"
                             android:textColor="@color/navy_blue"
                             android:textSize="48sp"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/montserrat_bold" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvDesc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Clear Sky"
                             android:textColor="@color/navy_blue"
                             android:textSize="18sp"
-                            android:fontFamily="@font/montserrat_regular" />
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
-                            <TextView
-                                android:id="@+id/tvDate"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Date: 2025-05-26"
-                                android:textColor="@color/navy_blue"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_regular" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
 
-                            <TextView
-                                android:id="@+id/tvTime"
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_date"
+                                    android:contentDescription="Date Icon"
+                                    app:tint="@color/navy_blue" />
+
+                                <TextView
+                                    android:id="@+id/tvDate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="@string/tvDate"
+                                    android:textColor="@color/navy_blue"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="Time: 06:24 AM"
-                                android:textColor="@color/navy_blue"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/montserrat_regular" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_time"
+                                    android:contentDescription="Time Icon"
+                                    app:tint="@color/navy_blue" />
+
+                                <TextView
+                                    android:id="@+id/tvTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="@string/tvTime"
+                                    android:textColor="@color/navy_blue"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <TextView
@@ -123,10 +154,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Last Updated: N/A"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="@string/tvLastUpdated"
                             android:textColor="@color/navy_blue"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/montserrat_regular" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -151,105 +182,125 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="12dp"
                             android:fontFamily="@font/montserrat_bold"
-                            android:text="Weather Details"
+                            android:text="@string/weather_details"
                             android:textColor="@color/navy_blue"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
-                        <LinearLayout
+                        <androidx.gridlayout.widget.GridLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                            app:columnCount="2"
+                            app:rowCount="2">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginEnd="8dp"
-                                android:contentDescription="Humidity Icon"
-                                android:src="@drawable/ic_humidity"
-                                app:tint="@color/navy_blue" />
-
-                            <TextView
-                                android:id="@+id/tvHumidity"
+                            <!-- Humidity -->
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/montserrat_regular"
+                                android:layout_margin="8dp"
+                                android:orientation="vertical"
                                 android:gravity="center"
-                                android:text="Humidity: 30%"
-                                android:textAlignment="center"
-                                android:textColor="@color/navy_blue"
-                                android:textSize="16sp" />
+                                app:layout_columnWeight="1">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginStart="8dp"
-                                android:contentDescription="Wind Icon"
-                                android:src="@drawable/ic_wind"
-                                app:tint="@color/navy_blue" />
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:contentDescription="Humidity Icon"
+                                    android:src="@drawable/ic_humidity" />
 
-                            <TextView
-                                android:id="@+id/tvWind"
+                                <TextView
+                                    android:id="@+id/tvHumidity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center"
+                                    android:text="@string/tvHumidity"
+                                    android:textColor="@color/navy_blue"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+                            <!-- Wind -->
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/montserrat_regular"
+                                android:layout_margin="8dp"
+                                android:orientation="vertical"
                                 android:gravity="center"
-                                android:text="Wind: 3.3 m/s"
-                                android:textAlignment="center"
-                                android:textColor="@color/navy_blue"
-                                android:textSize="16sp" />
-                        </LinearLayout>
+                                app:layout_columnWeight="1">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:contentDescription="Wind Icon"
+                                    android:src="@drawable/ic_wind" />
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginEnd="8dp"
-                                android:contentDescription="Pressure Icon"
-                                android:src="@drawable/ic_pressure"
-                                app:tint="@color/navy_blue" />
+                                <TextView
+                                    android:id="@+id/tvWind"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center"
+                                    android:text="@string/tvWind"
+                                    android:textColor="@color/navy_blue"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tvPressure"
+                            <!-- Pressure -->
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/montserrat_regular"
+                                android:layout_margin="8dp"
+                                android:orientation="vertical"
                                 android:gravity="center"
-                                android:text="Pressure: 1006 hPa"
-                                android:textAlignment="center"
-                                android:textColor="@color/navy_blue"
-                                android:textSize="16sp" />
+                                app:layout_columnWeight="1">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginStart="8dp"
-                                android:contentDescription="Clouds Icon"
-                                android:src="@drawable/ic_clouds"
-                                app:tint="@color/navy_blue" />
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:contentDescription="Pressure Icon"
+                                    android:src="@drawable/ic_pressure" />
 
-                            <TextView
-                                android:id="@+id/tvClouds"
+                                <TextView
+                                    android:id="@+id/tvPressure"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center"
+                                    android:text="@string/tvPressure"
+                                    android:textColor="@color/navy_blue"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+
+                            <!-- Clouds -->
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/montserrat_regular"
+                                android:layout_margin="8dp"
+                                android:orientation="vertical"
                                 android:gravity="center"
-                                android:text="Clouds: 3%"
-                                android:textAlignment="center"
-                                android:textColor="@color/navy_blue"
-                                android:textSize="16sp" />
-                        </LinearLayout>
+                                app:layout_columnWeight="1">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:contentDescription="Clouds Icon"
+                                    android:src="@drawable/ic_clouds" />
+
+                                <TextView
+                                    android:id="@+id/tvClouds"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center"
+                                    android:text="@string/tvClouds"
+                                    android:textColor="@color/navy_blue"
+                                    android:textSize="16sp" />
+                            </LinearLayout>
+                        </androidx.gridlayout.widget.GridLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -259,11 +310,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Today"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/today"
                     android:textColor="@color/navy_blue"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/montserrat_bold" />
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvTodayForecast"
@@ -273,8 +324,8 @@
                     android:background="@color/good_sky_blue"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:padding="12dp"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:padding="12dp" />
 
                 <!-- 5-day Forecast -->
                 <TextView
@@ -282,11 +333,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Next 5 Days"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/next_5_days"
                     android:textColor="@color/navy_blue"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/montserrat_bold" />
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvFiveDayForecast"
@@ -296,8 +347,8 @@
                     android:background="@color/good_sky_blue"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:padding="12dp"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:padding="12dp" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
