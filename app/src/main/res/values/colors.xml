@@ -12,5 +12,7 @@
     <color name="teal">#008080</color>
     <color name="good_sky_blue_1">#B3E5FC</color>
     <color name="skyblue_1">#4FC3F7</color>
+    <color name="light_skyblue">#CBE3F4</color>
+
 
 </resources>

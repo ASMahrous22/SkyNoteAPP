@@ -96,20 +96,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/ic_date"
                                     android:contentDescription="Date Icon"
+                                    android:src="@drawable/ic_date"
                                     app:tint="@color/navy_blue" />
 
                                 <TextView
@@ -127,14 +127,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/ic_time"
                                     android:contentDescription="Time Icon"
+                                    android:src="@drawable/ic_time"
                                     app:tint="@color/navy_blue" />
 
                                 <TextView
@@ -198,8 +198,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:orientation="vertical"
                                 android:gravity="center"
+                                android:orientation="vertical"
                                 app:layout_columnWeight="1">
 
                                 <ImageView
@@ -225,8 +225,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:orientation="vertical"
                                 android:gravity="center"
+                                android:orientation="vertical"
                                 app:layout_columnWeight="1">
 
                                 <ImageView
@@ -252,8 +252,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:orientation="vertical"
                                 android:gravity="center"
+                                android:orientation="vertical"
                                 app:layout_columnWeight="1">
 
                                 <ImageView
@@ -279,8 +279,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:orientation="vertical"
                                 android:gravity="center"
+                                android:orientation="vertical"
                                 app:layout_columnWeight="1">
 
                                 <ImageView
