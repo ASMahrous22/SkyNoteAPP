@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/skyblue">
+    android:background="@drawable/current_weather_gradient">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_animation"
-        android:layout_width="386dp"
-        android:layout_height="325dp"
+        android:layout_width="397dp"
+        android:layout_height="392dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
@@ -18,4 +18,21 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/splash_screen" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/skyblue"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="The Sky In a Nutshell"
+        android:textColor="@color/navy_blue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/lottie_animation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.876" />
 </androidx.constraintlayout.widget.ConstraintLayout>

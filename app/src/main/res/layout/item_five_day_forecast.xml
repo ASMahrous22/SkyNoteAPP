@@ -10,9 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/skyblue"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:gravity="center_vertical">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tvDate"
@@ -20,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Jan 01"
-            android:textSize="14sp"
             android:textColor="@color/navy_blue"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -35,8 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="25°"
-            android:textSize="16sp"
             android:textColor="@color/navy_blue"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -44,10 +45,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Clear Sky"
-            android:textSize="12sp"
-            android:textColor="@color/navy_blue"
+            android:ellipsize="end"
             android:maxLines="2"
-            android:ellipsize="end" />
+            android:text="Clear Sky"
+            android:textColor="@color/navy_blue"
+            android:textSize="12sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

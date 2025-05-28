@@ -6,7 +6,11 @@
     <color name="good_sky_blue">#84A6D7</color>
     <color name="dark_blue">#000080</color>
     <color name="navy_blue">#000B24</color>
-    <color name="dark_grey">#555555</color>
+    <color name="dark_grey">#333333</color>
     <color name="grey">#D3D3D3</color>
     <color name="light_grey">#F5F5F5</color>
+    <color name="teal">#008080</color>
+    <color name="good_sky_blue_1">#B3E5FC</color>
+    <color name="skyblue_1">#4FC3F7</color>
+
 </resources>
