@@ -48,7 +48,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/current_weather_gradient"
+                        android:background="@color/good_sky_blue"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="20dp">
